@@ -31,6 +31,13 @@ def authenticate!
   end
 end
 
+get '/sign_out' do
+  session[:user_id] = nil
+  flash[:notice] = "You have been signed out."
+
+  redirect '/'
+end
+
 get '/' do
   @title = 'Meet ups in Space'
   meet_ups = Meetup.all.order(:title)
@@ -62,12 +69,6 @@ get '/auth/github/callback' do
   redirect '/'
 end
 
-get '/sign_out' do
-  session[:user_id] = nil
-  flash[:notice] = "You have been signed out."
-
-  redirect '/'
-end
 
 get '/example_protected_page' do
   authenticate!
@@ -90,8 +91,9 @@ end
 # /////
 # Join Meetup_inprogress
 post '/:id' do
-  Usermeetup.new(params['id'], user.id)
-  redirect '/:id'
+  user = current_user
+  Usermeetup.create(meetup_id: params['id'], user_id: user.id)
+  redirect '/' + params['id']
 end
 # /////
 
