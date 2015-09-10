@@ -1,0 +1,15 @@
+<h1><%= meet_up.title%></h1>
+<h3>Description</h3>
+<p><%= meet_up.description%></p>
+<h3>Location</h3>
+<p><%= meet_up.location%></p>
+<h4>Attendees:</h4>
+<ul>
+<% attendees.each do |attendee| %>
+  <li><%= attendee.username %></li>
+	<% end %>
+</ul>
+<form  action="/<%= meet_up.id %>" method="Post">
+	<input class='button' type="submit" value="Join">
+</form>
+<a href="/">Go back</a>
